@@ -1,0 +1,268 @@
+[]{#anchor}Lingudesk System Architecture - Version 4.0
+
+[]{#anchor-1}System Overview:
+
+-   Lingudesk is a distributed language learning platform consisting of
+    > 6 physical servers.
+
+-   The db, auth, ai, credit, and backend physical servers are connected
+    > to each other in an internal network. The only external connection
+    > point of this network is the backend server.
+
+-   The frontend physical server is also built separately and is
+    > authorized to connect externally to the backend server.
+
+**Communication Method:**
+
+-   External connections are established by Traefik and certificates are
+    > automatically obtained.
+
+-   Each server independently performs JWT validation.
+
+-   Communication in the internal network has API keys.
+
+-   Ten-character user ID is used throughout the system to identify
+    > users.
+
+[]{#anchor-2}Physical Server Infrastructure:
+
+> []{#anchor-3}Server 1: Web Server
+
+-   **External IP**: 91.99.52.132
+
+-   **Internal IP**: Not in private network (public hosting)
+
+-   **Domain**: [*lingudesk.com*](http://lingudesk.com),
+    > [*www.lingudesk.com*](http://www.lingudesk.com),
+    > [](http://www.lingudesk.com/admin)[*www.lingudesk.com/admin*](http://www.lingudesk.com/admin)
+    > for admin panel
+
+-   **Purpose**: Frontend application hosting
+
+-   **Technology**: Svelte SPA
+
+-   **External Access**: Public (HTTPS only)
+
+-   **Users: **Has two independent authentications, one for admin and
+    > one for user, where admin only has two-factor authentication.
+
+> []{#anchor-4}Server 2: Backend Server
+
+-   **External IP**: 116.203.51.64
+
+-   **Internal IP**: 10.0.0.2
+
+-   **Domain**: [*backend.lingudesk.net*](http://backend.lingudesk.net)
+
+-   **Technology**: PostgreSQL + FastAPI + HTTPx
+
+-   External communications: Creating access for frontend to internal
+    > servers and creating access for Paddle webhook to credit server.
+
+-   JWT validation
+
+-   CORS control
+
+-   Usage limitation control
+
+-   Activity logging in file with two-month rotation capability
+
+-   Has a products table including product code, product name (premium
+    > account, plus account, 100 token package, 500 token package, etc.)
+    > and product price
+
+-   Has a service cost table based on service provider endpoint
+    > including endpoint name, unit price, minimum required account
+    > type, minimum required credit, minimum required credit coefficient
+    > based on total message volume.
+
+-   Has a routing table meaning that based on user type and requested
+    > endpoint, it decides which endpoint to send the request to. Has
+    > fields for input endpoint (coming from frontend), output endpoint
+    > (where request is sent) and user type.
+
+-   CORS control: Only access from frontend address and Paddle webhook
+    > is allowed.
+
+-   Usage limitation control: Each user can send only 50 requests per
+    > minute.
+
+-   Credit management: The frontend server has requests for database and
+    > artificial intelligence service provider servers. These requests
+    > are first sent to the backend server. The backend server first
+    > reads the user type (free, plus, premium) and credit amount from
+    > the credit server. Then it determines the approximate service
+    > price along with the required user type for it. Then it checks
+    > whether this type of user can use this service or has sufficient
+    > balance and decides based on the routing table that the request to
+    > which exact endpoint should be sent. If approved, the request is
+    > sent to the service provider server and its response is returned
+    > to the backend. The backend delivers the request to the frontend.
+    > *In case of correct delivery* the backend server sends the
+    > deduction amount request to the credit server. Note that the
+    > minimum processing amount is 1 cent, which the backend server
+    > accumulates costs for each user based on 10 character user ID, and
+    > if it exceeds 1 cent, it reports it in the last service and resets
+    > the user\'s temporary account. The backend server calculates the
+    > cost from the response received from the service provider server,
+    > in the form of tokens or number of products and using the unit
+    > price in its service cost table, and sends it to the credit
+    > server. The backend server understands the name of the service
+    > provider server from the endpoint sent by the frontend, but
+    > according to its routing table, it decides exactly which endpoint
+    > to route the request to for the endpoint declared by the frontend.
+    > Because the frontend only says the virtual and general endpoint
+    > name. The actual physical endpoints are in the routing table.
+
+> []{#anchor-5}Server 3: Authentication Server
+
+-   **Internal IP**: 10.0.0.3
+
+-   Endpoint /auth
+
+-   **Domain**: None (internal only)
+
+-   **Purpose**: Authentication and user management + JWT generation
+
+-   RS256 encoding with fields \"user_id\", \"email\", \"name\",
+    > \"role\", \"exp\", \"iat\"
+
+-   **External Access**: None (only through backend)
+
+-   **Database**: PostgreSQL for users and user login/logout logs.
+
+-   Support for 2FA via email sending and ability for general activation
+    > in admin settings\
+
+-   Support for login with Google and Apple accounts and ability to
+    > activate in admin panel
+
+-   Support for sending invitations and ability to make mandatory for
+    > everyone in admin panel
+
+-   Two types of users: admin with access to everything and ability to
+    > define admin and user
+
+-   Admin endpoints for settings and admin panel
+
+-   Activity logging with two-month rotation capability in file
+
+> []{#anchor-6}Server 4: Database Server
+
+-   **Internal IP**: 10.0.0.4
+
+-   **Domain**: None (internal only)
+
+-   **Purpose**: User data and file management
+
+-   **External Access**: None (only through backend)
+
+-   JWT token validation + User verification - each user only has access
+    > to their own data.
+
+-   **Database**: PostgreSQL - user documents, flashcards, media files
+
+-   **File management:** MinIO
+
+-   **Features**: Sync operations, Media handling
+
+> []{#anchor-7}Server 5: Artificial Intelligence Server
+
+-   **Internal IP**: 10.0.0.5
+
+-   **Domain**: None (internal only)
+
+-   **Purpose**: AI services (ChatGPT, Claude, Deepseek, Flux Schnel,
+    > Chatterbox-TTS)
+
+-   **External Access**: None (only through backend)
+
+-   **Features**: Caching, Queueing, Model integration
+
+-   A general base including docker, [*main.py*](http://main.py), MinIO,
+    > PostgreSQL that has CORS and JWT validation and a python file for
+    > each AI server as its plugin that has its own cache and python
+    > queue and rate limit as a plugin. All settings in .env file.
+
+-   For each plugin there is a context file in jason format including
+    > the parameter name and its context text. Like plugin_chatgpt.py,
+    > context_chatgpt.json
+
+-   For each plugin there is one end point to access from backend.
+
+-   Activity logging in file with two-month rotation capability by
+    > main.py
+
+-   Caching capability with MinIO for files and PostgreSQL for text are
+    > permanent. Cache is only updated when the frontend requests that
+    > the data has to be from the model.
+
+-   Specification that data is generated from cache or from or from
+    > model in response.
+
+-   Simple error management. In case of no model response or problem,
+    > report error type in response.
+
+```{=html}
+<!-- -->
+```
+-   MinIO username and password and parameters in .env file
+
+-   MinIO, one Bucket for each model plugin with the model\'s own name
+    > for its cache
+
+-   PostgreSQL username and password and parameters in .env file
+
+-   PostgreSQL, one table for each model plugin with the model\'s own
+    > name for its cache
+
+> /ai/\
+> ├── main.py \# core + FastAPI setup\
+> ├── config.py \# setting + .env و configuration\
+> ├── database.py \# PostgreSQL connection\
+> ├── minio_client.py \# MinIO client\
+> ├── auth.py \# JWT validation\
+> ├── cache_manager.py \# cache management\
+> ├── requirements.txt\
+> ├── Dockerfile\
+> ├── docker-compose.yml \# PostgreSQL + MinIO + AI Server\
+> ├── .env\
+> ├── plugins/\
+> │ ├── plugin_chatgpt.py \
+> │ ├── context_chatgpt.json\
+> │ ├── plugin_flux.py \
+> │ └── plugin_chatterbox.py\
+> └── logs/
+
+> []{#anchor-8}Server 6: Credit Server
+
+-   **Internal IP**: 10.0.0.6
+
+-   **Domain**: None (internal only)
+
+-   **Purpose**: Financial management and credit system with JWT
+    > validation
+
+-   Paddle webhook support through backend server.
+
+-   **Database**: PostgreSQL with transaction logging
+
+-   **Features**: JWT token validation + User verification for regular
+    > users who only have access to their general statistics and can
+    > only register expenses. Credit increase only through Paddle
+    > webhook
+
+-   Supports three types of users: free, plus, premium.
+
+-   Has users table with user type data, user credit in euros, email,
+    > name, creation date.
+
+-   Has admin and user endpoints where for user endpoints, user ID is
+    > compared with token user ID and information is provided only for
+    > that user or that user\'s request is performed, and for admin
+    > endpoints, admin role is checked in token and all statistics are
+    > provided, refund and account charging capabilities also exist.
+
+```{=html}
+<!-- -->
+```

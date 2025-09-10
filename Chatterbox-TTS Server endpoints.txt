@@ -1,0 +1,119 @@
+Chatterbox-TTS Server
+
+</div>
+
+<div>
+
+[]{#anchor}https://34p2qgoh279huu-8080.proxy.runpod.net/
+
+<div>
+
+  --------------------- -------------------------------------------------------------------------
+  status                \"ready\"[]{#anchor-1}
+  models_loaded         []{#anchor-2}
+  english               true[]{#anchor-3}
+  multilingual          true[]{#anchor-4}
+  supported_languages   []{#anchor-5}
+  0                     []{#anchor-6}
+  code                  \"ar\"[]{#anchor-7}
+  name                  \"Arabic\"[]{#anchor-8}
+  1                     []{#anchor-9}
+  code                  \"da\"[]{#anchor-10}
+  name                  \"Danish\"[]{#anchor-11}
+  2                     []{#anchor-12}
+  code                  \"de\"[]{#anchor-13}
+  name                  \"German\"[]{#anchor-14}
+  3                     []{#anchor-15}
+  code                  \"el\"[]{#anchor-16}
+  name                  \"Greek\"[]{#anchor-17}
+  4                     []{#anchor-18}
+  code                  \"en\"[]{#anchor-19}
+  name                  \"English\"[]{#anchor-20}
+  5                     []{#anchor-21}
+  code                  \"es\"[]{#anchor-22}
+  name                  \"Spanish\"[]{#anchor-23}
+  6                     []{#anchor-24}
+  code                  \"fi\"[]{#anchor-25}
+  name                  \"Finnish\"[]{#anchor-26}
+  7                     []{#anchor-27}
+  code                  \"fr\"[]{#anchor-28}
+  name                  \"French\"[]{#anchor-29}
+  8                     []{#anchor-30}
+  code                  \"he\"[]{#anchor-31}
+  name                  \"Hebrew\"[]{#anchor-32}
+  9                     []{#anchor-33}
+  code                  \"hi\"[]{#anchor-34}
+  name                  \"Hindi\"[]{#anchor-35}
+  10                    []{#anchor-36}
+  code                  \"it\"[]{#anchor-37}
+  name                  \"Italian\"[]{#anchor-38}
+  11                    []{#anchor-39}
+  code                  \"ja\"[]{#anchor-40}
+  name                  \"Japanese\"[]{#anchor-41}
+  12                    []{#anchor-42}
+  code                  \"ko\"[]{#anchor-43}
+  name                  \"Korean\"[]{#anchor-44}
+  13                    []{#anchor-45}
+  code                  \"ms\"[]{#anchor-46}
+  name                  \"Malay\"[]{#anchor-47}
+  14                    []{#anchor-48}
+  code                  \"nl\"[]{#anchor-49}
+  name                  \"Dutch\"[]{#anchor-50}
+  15                    []{#anchor-51}
+  code                  \"no\"[]{#anchor-52}
+  name                  \"Norwegian\"[]{#anchor-53}
+  16                    []{#anchor-54}
+  code                  \"pl\"[]{#anchor-55}
+  name                  \"Polish\"[]{#anchor-56}
+  17                    []{#anchor-57}
+  code                  \"pt\"[]{#anchor-58}
+  name                  \"Portuguese\"[]{#anchor-59}
+  18                    []{#anchor-60}
+  code                  \"ru\"[]{#anchor-61}
+  name                  \"Russian\"[]{#anchor-62}
+  19                    []{#anchor-63}
+  code                  \"sv\"[]{#anchor-64}
+  name                  \"Swedish\"[]{#anchor-65}
+  20                    []{#anchor-66}
+  code                  \"sw\"[]{#anchor-67}
+  name                  \"Swahili\"[]{#anchor-68}
+  21                    []{#anchor-69}
+  code                  \"tr\"[]{#anchor-70}
+  name                  \"Turkish\"[]{#anchor-71}
+  22                    []{#anchor-72}
+  code                  \"zh\"[]{#anchor-73}
+  name                  \"Chinese\"[]{#anchor-74}
+  emotion_presets       []{#anchor-75}
+  0                     \"neutral\"[]{#anchor-76}
+  1                     \"happy\"[]{#anchor-77}
+  2                     \"sad\"[]{#anchor-78}
+  3                     \"angry\"[]{#anchor-79}
+  4                     \"excited\"[]{#anchor-80}
+  5                     \"calm\"[]{#anchor-81}
+  6                     \"dramatic\"[]{#anchor-82}
+  external_url          \"[http://213.192.2.72:8080](http://213.192.2.72:8080/)\"[]{#anchor-83}
+  repository            \"ResembleAI/chatterbox\"[]{#anchor-84}
+  package               \"chatterbox-tts\"[]{#anchor-85}
+  endpoints             []{#anchor-86}
+  generate              \"<http://213.192.2.72:8080/generate>\"[]{#anchor-87}
+  generate_with_voice   \"<http://213.192.2.72:8080/generate-with-voice>\"[]{#anchor-88}
+  upload_voice          \"<http://213.192.2.72:8080/upload-voice>\"[]{#anchor-89}
+  audiobook             \"<http://213.192.2.72:8080/generate-audiobook>\"[]{#anchor-90}
+  audio                 \"<http://213.192.2.72:8080/audio/>{audio_id}\"[]{#anchor-91}
+  languages             \"<http://213.192.2.72:8080/languages>\"[]{#anchor-92}
+  emotions              \"<http://213.192.2.72:8080/emotions>\"[]{#anchor-93}
+  features              []{#anchor-94}
+  0                     \"23 Languages Support\"[]{#anchor-95}
+  1                     \"Voice Cloning with audio_prompt_path\"[]{#anchor-96}
+  2                     \"Emotion Control with 7 presets\"[]{#anchor-97}
+  3                     \"Speed Control\"[]{#anchor-98}
+  4                     \"Audiobook Generation\"[]{#anchor-99}
+  5                     \"Exaggeration Control (0.0-2.0)\"[]{#anchor-100}
+  6                     \"Reproducible with seed\"[]{#anchor-101}
+  7                     \"Workspace Model Caching\"[]{#anchor-102}
+  8                     \"Note: cfg parameter ignored (not in official API)\"
+  --------------------- -------------------------------------------------------------------------
+
+</div>
+
+</div>

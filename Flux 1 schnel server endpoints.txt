@@ -1,0 +1,17 @@
+Flux 1 schnel server
+
+[]{#anchor}https://4j7auku04strm8-8080.proxy.runpod.net/
+
+  -------------------- ------------------------------------------------------------------------
+  status               \"running\"[]{#anchor-1}
+  model_loaded         true[]{#anchor-2}
+  hf_token_available   true[]{#anchor-3}
+  external_url         \"[http://213.192.2.72:8080](http://213.192.2.72:8080/)\"[]{#anchor-4}
+  endpoints            []{#anchor-5}
+  generate             \"<http://213.192.2.72:8080/generate>\"[]{#anchor-6}
+  images               \"<http://213.192.2.72:8080/image/>{id}\"[]{#anchor-7}
+  health               \"<http://213.192.2.72:8080/>\"[]{#anchor-8}
+  usage                []{#anchor-9}
+  api_key              \"Optional: X-API-Key header\"[]{#anchor-10}
+  example              \"POST /generate with JSON body\"
+  -------------------- ------------------------------------------------------------------------
